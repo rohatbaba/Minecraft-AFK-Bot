@@ -54,11 +54,13 @@ function botuBaslat() {
             }, 1500);
         }
 
-        // Eğer sunucu giriş yapmanı istiyorsa
-        if (mesaj.includes('/login') || mesaj.includes('giriş yap')) {
-            setTimeout(() => {
-                bot.chat(`/login ${botSifresi}`);
-                console.log("Otomatik giriş işlemi yapıldı!");
+       // Eğer sunucu giriş yapmanı istiyorsa
+if (mesaj.includes('/login') || mesaj.includes('giriş yap')) {
+    setTimeout(() => {
+        bot.chat(`/login ${botSifresi}`);
+        console.log("Otomatik giriş işlemi yapıldı!");
+    }, 1000); // <-- Buradaki parantez ve süslü parantez eksik olabilir (1000ms = 1 saniye gecikme)
+} // <-- If bloğunu kapatan süslü parantez
             }, 1500);
         }
     });
