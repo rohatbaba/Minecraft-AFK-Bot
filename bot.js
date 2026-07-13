@@ -1,37 +1,34 @@
 const mineflayer = require('mineflayer');
 const express = require('express');
 
-// 1. RENDER İÇİN WEB SUNUCUSU (UptimeRobot ile botun uyumasını engeller)
+// 1. RENDER İÇİN WEB SUNUCUSU
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-    res.send("made by rokibaba - Bot 7/24 Aktif!");
+    res.send("Bot Aktif!");
 });
 
 app.listen(PORT, () => {
-    console.log(`Web sunucusu ${PORT} portunda çalışıyor.`);
+    console.log("Web sunucusu baslatildi.");
 });
 
 // 2. MINECRAFT BOT AYARLARI
 const botAyarlari = {
     host: '163.5.201.2',
     port: 12722,
-    username: 'nuekkis_bot' // Botun oyundan atılmaması için sabit adı
+    username: 'nuekkis_bot'
 };
-
-const botSifresi = "rokibaba"; // Şifren tam istediğin gibi "rokibaba" yapıldı
 
 let bot;
 
 function botuBaslat() {
     bot = mineflayer.createBot(botAyarlari);
 
-    // Bot sunucuya ilk adımı attığında
     bot.on('spawn', () => {
-        console.log("made by rokibaba - Bot başarıyla giriş yaptı!");
+        console.log("Bot sunucuya girdi!");
         
-        // Zıplama döngüsü (Her 3 saniyede bir zıplar)
+        // Zıplama fonksiyonu
         setInterval(() => {
             if (bot && bot.entity) {
                 bot.setControlState('jump', true);
@@ -42,40 +39,37 @@ function botuBaslat() {
         }, 3000);
     });
 
-    // Otomatik Giriş ve Kayıt Sistemi
+    // Otomatik Giris ve Kayit
     bot.on('message', (jsonMsg) => {
         const mesaj = jsonMsg.toString();
 
-        // Eğer sunucu kayıt olmanı istiyorsa (Tek şifreli sistem için düzenlendi)
-        if (mesaj.includes('/register') || mesaj.includes('kayıt ol') || mesaj.includes('/kayit')) {
+        // Kayit olma tetiklenirse (Düz yazı olarak iki kere şifre gönderir)
+        if (mesaj.includes('/register') || mesaj.includes('kayit ol') || mesaj.includes('/kayit')) {
             setTimeout(() => {
-                bot.chat(`/register ${rokibaba} ${rokibaba}); // Burası artık tek şifre gönderiyor abi
-                console.log("Otomatik tek şifreli kayıt işlemi yapıldı!");
+                bot.chat("/register rokibaba rokibaba"); 
+                console.log("Kayit olundu.");
             }, 1500);
         }
 
-        // Eğer sunucu giriş yapmanı istiyorsa
-        if (mesaj.includes('/login') || mesaj.includes('giriş yap')) {
+        // Giris yapma tetiklenirse
+        if (mesaj.includes('/login') || mesaj.includes('giris yap')) {
             setTimeout(() => {
-                bot.chat(`/login ${botSifresi}`);
-                console.log("Otomatik giriş işlemi yapıldı!");
+                bot.chat("/login rokibaba");
+                console.log("Giris yapildi.");
             }, 1500);
         }
     });
 
-    // Hata oluşursa botun tamamen çökmesini engelle
     bot.on('error', (err) => {
-        console.log(`Bot hatası: ${err.message}`);
+        console.log("Hata olustu: " + err.message);
     });
 
-    // Bot sunucudan düşerse 10 saniye sonra otomatik geri bağlanır
     bot.on('end', () => {
-        console.log("Bot sunucudan düştü, 10 saniye sonra tekrar bağlanıyor...");
+        console.log("Bot dustu, 10 saniye sonra tekrar baglaniyor...");
         setTimeout(() => {
             botuBaslat();
         }, 10000);
     });
 }
 
-// Sistemi çalıştır
 botuBaslat();
