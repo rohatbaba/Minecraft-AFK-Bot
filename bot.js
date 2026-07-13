@@ -20,7 +20,7 @@ const botAyarlari = {
     username: 'nuekkis_bot' // Botun oyundan atılmaması için sabit adı
 };
 
-const botSifresi = "rokibaba"; // Şifren tam istediğin gibi "rokibaba" yapıldı
+const botSifresi = "rokibaba"; // Şifren
 
 let bot;
 
@@ -46,11 +46,12 @@ function botuBaslat() {
     bot.on('message', (jsonMsg) => {
         const mesaj = jsonMsg.toString();
 
-        // Eğer sunucu kayıt olmanı istiyorsa (Tek şifreli sistem için düzenlendi)
+        // Eğer sunucu kayıt olmanı istiyorsa (İki şifreli sistem için düzeltildi)
         if (mesaj.includes('/register') || mesaj.includes('kayıt ol') || mesaj.includes('/kayit')) {
             setTimeout(() => {
-                bot.chat(`/register ${rokibaba} ${rokibaba}); // Burası artık tek şifre gönderiyor abi
-                console.log("Otomatik tek şifreli kayıt işlemi yapıldı!");
+                // Şifreyi iki defa gönderecek şekilde ve tırnak hatası düzeltildi:
+                bot.chat(`/register ${botSifresi} ${botSifresi}`); 
+                console.log("Otomatik çift şifreli kayıt işlemi yapıldı!");
             }, 1500);
         }
 
@@ -77,5 +78,5 @@ function botuBaslat() {
     });
 }
 
-// Sistemi çalıştır
+// Botu ilk kez çalıştır
 botuBaslat();
