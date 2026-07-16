@@ -7,8 +7,6 @@ const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     res.send("made by rokibaba - Bot 7/24 Aktif!");
-});
-
 app.listen(PORT, () => {
     console.log(`Web sunucusu ${PORT} portunda çalışıyor.`);
 });
